@@ -1,0 +1,8 @@
+global:
+    elements:
+      login:
+          - "#login"
+          - ".login"
+          - "button .login"
+    pages:
+      home: "https://google.com"

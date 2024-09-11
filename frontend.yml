@@ -1,0 +1,12 @@
+global:
+    elements:
+      search:
+        - "#search input"
+      submit:
+        - "#search button"
+      typeorm:
+        - "a[href='/package/typeorm']"
+    pages:
+      home: "https://www.npmjs.com"
+      results: "https://www.npmjs.com/search"
+      typeorm_details: "https://www.npmjs.com/package/typeorm"
