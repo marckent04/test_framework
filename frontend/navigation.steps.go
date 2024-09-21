@@ -3,17 +3,18 @@ package frontend
 import (
 	"cucumber/config"
 	Browser "cucumber/utils/frontend"
+	"fmt"
 	"github.com/go-rod/rod"
 	"log"
 	"strings"
-	"time"
 )
 
-var Tab *rod.Browser
+var testBrowser *rod.Browser
 var Page *rod.Page
 
 func iOpenAPrivateBrowserTab() {
-	Tab = Browser.GetInstance()
+	Browser.DestroyCurrentInstance()
+	testBrowser = Browser.GetInstance()
 }
 
 func iNavigateToPage(page string) {
@@ -21,25 +22,27 @@ func iNavigateToPage(page string) {
 	if err != nil {
 		log.Fatalf("Url for page %s not configured", page)
 	}
-	Page = Tab.MustPage(url)
-	Page.MustWaitStable()
-	Page.MustWaitIdle()
+	Page = testBrowser.MustPage(url)
 	Page.MustWaitNavigation()
+	Page.MustWaitIdle()
+
 	if err != nil {
-		log.Println(err)
 		log.Fatal(err)
 	}
 
-	time.Sleep(10 * time.Second)
 }
 
-func iAmRedirectedToPage(page string) {
+func iAmRedirectedToPage(page string) error {
+	Page.MustWaitNavigation()
 	Page.MustWaitDOMStable()
 	url, err := config.GetPageUrl(page)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
 	if !strings.HasPrefix(Page.MustInfo().URL, url) {
-		log.Fatal("redirection failed")
+		return fmt.Errorf("redirection failed")
 	}
+
+	return nil
 }

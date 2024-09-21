@@ -3,7 +3,6 @@ package Browser
 import (
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
-	"log"
 	"os"
 )
 
@@ -18,7 +17,7 @@ func GetInstance() *rod.Browser {
 
 func CreateInstance() {
 	path, _ := launcher.LookPath()
-	if os.Getenv("DEBUG") != "true" {
+	if os.Getenv("DEBUG") == "true" {
 		u := launcher.New().Bin(path).
 			Headless(false).
 			MustLaunch()
@@ -26,5 +25,11 @@ func CreateInstance() {
 	} else {
 		browser = rod.New().ControlURL(launcher.New().Bin(path).MustLaunch()).MustConnect()
 	}
-	log.Println("browser instance created")
+}
+
+func DestroyCurrentInstance() {
+	if browser != nil {
+		browser.MustClose()
+		browser = nil
+	}
 }

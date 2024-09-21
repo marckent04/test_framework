@@ -42,6 +42,18 @@ func GetElementSelectors(label string) (selectors []string) {
 	return
 }
 
+func GetInputSelectors(name string) (selectors []string) {
+	name = wildcardToKey(name)
+
+	path, err := yaml.PathString(fmt.Sprintf("$.global.inputs.%s", name))
+	if err != nil {
+		return
+	}
+
+	err = path.Read(strings.NewReader(yamlContent), &selectors)
+	return
+}
+
 func wildcardToKey(label string) string {
 	return strings.ToLower(strings.ReplaceAll(label, " ", "_"))
 }

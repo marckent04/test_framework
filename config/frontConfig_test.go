@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 	"slices"
 	"testing"
@@ -32,10 +31,18 @@ func TestGetPageUrl(t *testing.T) {
 func TestGetElementSelectors(t *testing.T) {
 	setup(t)
 
-	log.Println(GetElementSelectors("login"))
-	log.Println(slices.Equal([]string{"#login", "l"}, []string{"l", "#login"}))
 	expected := []string{"#login", ".login", "button .login"}
 	if selectors := GetElementSelectors("login"); !slices.Equal(selectors, expected) {
+		t.Errorf("error ")
+	}
+}
+
+func TestGetInputSelectors(t *testing.T) {
+	setup(t)
+
+	expected := []string{"#username"}
+
+	if selectors := GetInputSelectors("username"); !slices.Equal(selectors, expected) {
 		t.Errorf("error ")
 	}
 }

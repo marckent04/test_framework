@@ -1,12 +1,14 @@
 global:
     elements:
-      search:
-        - "#search input"
-      submit:
-        - "#search button"
-      typeorm:
-        - "a[href='/package/typeorm']"
+        iphone_15:
+            - "div[data-catalog='true'] article"
+        newsletter_modal_close:
+            - "button[aria-label='newsletter_popup_close-cta']"
+    inputs:
+        search:
+            - "#fi-q"
     pages:
-      home: "https://www.npmjs.com"
-      results: "https://www.npmjs.com/search"
-      typeorm_details: "https://www.npmjs.com/package/typeorm"
+        jumia_home: "https://www.jumia.ci"
+        iphone_15_results: "https://www.jumia.ci/mlp-iphone-15/"
+        yyyyy_results: "https://www.jumia.ci/catalog/?q=yyyyy"
+
