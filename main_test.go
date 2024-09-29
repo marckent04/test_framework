@@ -10,7 +10,7 @@ import (
 
 var opts = godog.Options{
 	Output:      colors.Colored(os.Stdout),
-	Concurrency: 1,
+	Concurrency: 2,
 	Format:      "pretty",
 	Paths:       []string{"features"},
 }

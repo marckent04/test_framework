@@ -1,4 +1,4 @@
-package frontend
+package common
 
 import (
 	"cucumber/config"
@@ -6,24 +6,24 @@ import (
 	"log"
 )
 
-func getElement(label string) *rod.Element {
+func GetElement(page *rod.Page, label string) *rod.Element {
 	selectors := config.GetElementSelectors(label)
-	return getElementBySelectors(selectors)
+	return GetElementBySelectors(page, selectors)
 }
 
-func getInputElement(label string) (elt *rod.Element) {
+func GetInputElement(page *rod.Page, label string) (elt *rod.Element) {
 	selectors := config.GetInputSelectors(label)
-	return getElementBySelectors(selectors)
+	return GetElementBySelectors(page, selectors)
 }
 
-func getElementBySelectors(potentialSelectors []string) *rod.Element {
+func GetElementBySelectors(page *rod.Page, potentialSelectors []string) *rod.Element {
 	ch := make(chan *rod.Element, 1)
 	defer close(ch)
 
 	for _, selector := range potentialSelectors {
 		selector := selector
 		go func() {
-			element, _ := Page.Element(selector)
+			element, _ := page.Element(selector)
 			ch <- element
 		}()
 	}
@@ -31,14 +31,14 @@ func getElementBySelectors(potentialSelectors []string) *rod.Element {
 	return <-ch
 }
 
-func getActiveSelector(potentialSelectors []string) string {
+func GetActiveSelector(page *rod.Page, potentialSelectors []string) string {
 	ch := make(chan string, 1)
 	defer close(ch)
 
 	for _, selector := range potentialSelectors {
 		selector := selector
 		go func() {
-			exists, _, _ := Page.Has(selector)
+			exists, _, _ := page.Has(selector)
 			if exists {
 				ch <- selector
 			}
@@ -48,10 +48,10 @@ func getActiveSelector(potentialSelectors []string) string {
 	return <-ch
 }
 
-func getElementCount(label string) int {
+func GetElementCount(page *rod.Page, label string) int {
 	potentialSelectors := config.GetElementSelectors(label)
-	selector := getActiveSelector(potentialSelectors)
-	elements, err := Page.Elements(selector)
+	selector := GetActiveSelector(page, potentialSelectors)
+	elements, err := page.Elements(selector)
 	if err != nil {
 		log.Fatal("no elements found with selector ", selector)
 	}
