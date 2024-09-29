@@ -9,7 +9,7 @@ Feature: Products search (JUMIA)
     When I fill the search input with "Iphone 15"
     And I press the enter button
     Then I am redirected to iphone 15 results page
-    And I must see on page 6 iphone 15
+    And I must see on page 14 iphone 15
 
 
   Scenario: A user search an unexciting product on the web shop
