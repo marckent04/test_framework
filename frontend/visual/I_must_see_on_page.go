@@ -7,7 +7,7 @@ import (
 )
 
 var iMustSeeOnThePage = common.FrontStep{
-	Sentences: []string{`^I must see ([^"]*) on the page$`},
+	Sentences: []string{`^I must see {string} on the page$`},
 	Definition: func(ctx *common.Context) common.FrontStepDefinition {
 		return func(word string) error {
 			if !strings.Contains(ctx.GetCurrentPage().MustElement("body").String(), word) {

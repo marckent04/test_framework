@@ -7,6 +7,7 @@ import (
 	"cucumber/frontend/keyboard"
 	"cucumber/frontend/navigation"
 	"cucumber/frontend/visual"
+	"cucumber/utils"
 	"github.com/cucumber/godog"
 	"slices"
 )
@@ -20,7 +21,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	for _, step := range allSteps {
 		handler := step.Definition(frontendCtx)
 		for _, sentence := range step.Sentences {
-			ctx.Step(sentence, handler)
+			ctx.Step(utils.ConvertWildcards(sentence), handler)
 		}
 	}
 }

@@ -7,13 +7,13 @@ doc in progress
 
 ### BROWSER NAVIGATION
 -   I open a new private browser tab
--   I am redirected to ([^"]*) page
--   I navigate to ([^"]*) page
+-   I am redirected to {string} page
+-   I navigate to {string} page
 
 ### BROWSER INTERACTIONS
--   I click on "([^"]*)" ([^"]*)
--   I click on "([^"]*)" ([^"]*) if exists
--    I fill the ([^"]*) input with "([^"]*)"
+-   I click on "{string}" {string}
+-   I click on "{string}" {string} if exists
+-    I fill the {string} input with "{string}"
 
 
 ## Keyboard 
@@ -21,6 +21,6 @@ doc in progress
 
 
 ### Others users actions
-- I must see ([^"]*) on the page
-- I must see on page (\d+) ([^"]*)
-- I must see on page a (link|button|element) with text "([^"]*)"
+- I must see {string} on the page
+- I must see on page {number} {string}
+- I must see on page a (link|button|element) with text "{string}"

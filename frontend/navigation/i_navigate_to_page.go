@@ -7,7 +7,7 @@ import (
 )
 
 var iNavigateToPage = common.FrontStep{
-	Sentences: []string{`^I navigate to ([^"]*) page$`},
+	Sentences: []string{`^I navigate to {string} page$`},
 	Definition: func(ctx *common.Context) common.FrontStepDefinition {
 		return func(page string) error {
 			url, err := config.GetPageUrl(page)
