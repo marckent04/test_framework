@@ -9,3 +9,7 @@
 - [ ] mettre un timeout pour eviter les tests de s'eterniser
 - [ ] gestion des erreurs
 -  [ ] log
+-  [ ] handler testing
+-  [ ] sentences testing
+-  [ ] s'assurer que les sous fichiers ou sont rangés les .features sont trouvés
+-  [ ] pouvoir activer la concurrence mais doit etre desactiver auto en mode debug
