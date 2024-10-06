@@ -3,7 +3,6 @@ package visual
 import (
 	"cucumber/frontend/common"
 	"fmt"
-	"time"
 )
 
 var iMustSeeOnPageAnElementWithText = common.FrontStep{
@@ -17,14 +16,13 @@ var iMustSeeOnPageAnElementWithText = common.FrontStep{
 			}
 
 			xPath := fmt.Sprintf("//%s[contains(text(),\"%s\")]", cases[elementLabel], text)
-			element, err := ctx.GetCurrentPage().Timeout(2 * time.Second).ElementX(xPath)
-
+			element, err := ctx.GetCurrentPage().GetOneByXPath(xPath)
 			cErr := fmt.Errorf("no %s is visible with text \"%s\"", elementLabel, text)
 			if err != nil {
 				return cErr
 			}
 
-			visible, _ := element.Visible()
+			visible := element.IsVisible()
 			if !visible {
 				return cErr
 			}

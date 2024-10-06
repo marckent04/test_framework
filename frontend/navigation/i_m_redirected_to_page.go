@@ -12,15 +12,15 @@ var iAmRedirectedToPage = common.FrontStep{
 	Definition: func(ctx *common.Context) common.FrontStepDefinition {
 		return func(pageName string) error {
 			page := ctx.GetCurrentPage()
-			page.MustWaitNavigation()
-			page.MustWaitDOMStable()
+			page.WaitLoading()
 			url, err := config.GetPageUrl(pageName)
 			if err != nil {
 				return err
 			}
 
-			if !strings.HasPrefix(page.MustInfo().URL, url) {
-				return fmt.Errorf("redirection failed")
+			currentUrl := page.GetInfo().URL
+			if !strings.HasPrefix(currentUrl, url) {
+				return fmt.Errorf("redirection failed current url is %s", currentUrl)
 			}
 
 			return nil
