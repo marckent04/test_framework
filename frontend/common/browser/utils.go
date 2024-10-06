@@ -1,29 +1,28 @@
-package common
+package browser
 
 import (
 	"cucumber/config"
-	"github.com/go-rod/rod"
 	"log"
 )
 
-func GetElement(page *rod.Page, label string) *rod.Element {
+func GetElement(page Page, label string) Element {
 	selectors := config.GetElementSelectors(label)
 	return GetElementBySelectors(page, selectors)
 }
 
-func GetInputElement(page *rod.Page, label string) (elt *rod.Element) {
+func GetInputElement(page Page, label string) Element {
 	selectors := config.GetInputSelectors(label)
 	return GetElementBySelectors(page, selectors)
 }
 
-func GetElementBySelectors(page *rod.Page, potentialSelectors []string) *rod.Element {
-	ch := make(chan *rod.Element, 1)
+func GetElementBySelectors(page Page, potentialSelectors []string) Element {
+	ch := make(chan Element, 1)
 	defer close(ch)
 
 	for _, selector := range potentialSelectors {
 		selector := selector
 		go func() {
-			element, _ := page.Element(selector)
+			element, _ := page.GetOneBySelector(selector)
 			ch <- element
 		}()
 	}
@@ -31,14 +30,14 @@ func GetElementBySelectors(page *rod.Page, potentialSelectors []string) *rod.Ele
 	return <-ch
 }
 
-func GetActiveSelector(page *rod.Page, potentialSelectors []string) string {
+func GetActiveSelector(page Page, potentialSelectors []string) string {
 	ch := make(chan string, 1)
 	defer close(ch)
 
 	for _, selector := range potentialSelectors {
 		selector := selector
 		go func() {
-			exists, _, _ := page.Has(selector)
+			exists := page.HasSelector(selector)
 			if exists {
 				ch <- selector
 			}
@@ -48,10 +47,10 @@ func GetActiveSelector(page *rod.Page, potentialSelectors []string) string {
 	return <-ch
 }
 
-func GetElementCount(page *rod.Page, label string) int {
+func GetElementCount(page Page, label string) int {
 	potentialSelectors := config.GetElementSelectors(label)
 	selector := GetActiveSelector(page, potentialSelectors)
-	elements, err := page.Elements(selector)
+	elements, err := page.GetAllBySelector(selector)
 	if err != nil {
 		log.Fatal("no elements found with selector ", selector)
 	}
