@@ -1,10 +1,9 @@
 package browser
 
 import (
-	"os"
-
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
+	"os"
 )
 
 type rodBrowser struct {

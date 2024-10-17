@@ -6,7 +6,8 @@ global:
             - "button[aria-label='newsletter_popup_close-cta']"
     inputs:
         search:
-            - "#fi-q"
+#            - "#fi-q"
+            - "#kkkkk"
     pages:
         jumia_home: "https://www.jumia.ci"
         iphone_15_results: "https://www.jumia.ci/mlp-iphone-15/"

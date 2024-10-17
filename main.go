@@ -1,28 +1,55 @@
 package main
 
 import (
+	"context"
 	"cucumber/frontend"
+	"github.com/cucumber/godog"
 	"log"
 	"os"
-
-	"github.com/cucumber/godog"
-	"github.com/cucumber/godog/colors"
 )
 
 func main() {
+	file, err := os.Create("report.html")
+	if err != nil {
+		log.Panicln("cannot create report file in this folder")
+	}
+
+	defer file.Close()
 	const concurrency = 2
 	var opts = godog.Options{
-		Output:      colors.Colored(os.Stdout),
-		Concurrency: concurrency,
-		Format:      "pretty",
-		Paths:       []string{"features"},
+		Output:              file,
+		Concurrency:         concurrency,
+		Format:              "pretty",
+		NoColors:            true,
+		ShowStepDefinitions: false,
+		Paths:               []string{"features"},
 	}
 
 	testSuite := godog.TestSuite{
 		Name:    "App",
 		Options: &opts,
-		ScenarioInitializer: func(context *godog.ScenarioContext) {
-			frontend.InitializeScenario(context)
+		ScenarioInitializer: func(sc *godog.ScenarioContext) {
+			frontend.InitializeScenario(sc)
+
+			sc.StepContext().After(func(ctx context.Context, st *godog.Step, status godog.StepResultStatus, err error) (context.Context, error) {
+				log.Println("step :", st.Text, "status", status.String(), "error : ", err)
+				return ctx, err
+			})
+			sc.After(func(ctx context.Context, sc *godog.Scenario, err error) (context.Context, error) {
+				log.Println("laaa")
+				/*			log.Println("----------------------------------")
+							log.Println("scenario name ", sc.Name)
+							godog.ScenarioContext{}.StepContext().After(func(ctx context.Context, st *godog.Step, status godog.StepResultStatus, err error) (context.Context, error) {
+								log.Println("step : ", st.Text, "status", status.String(), "error : ", err)
+								return ctx, err
+							})
+
+							log.Println("----------------------------------")
+				*/
+				return ctx, err
+
+			})
+
 		},
 	}
 
