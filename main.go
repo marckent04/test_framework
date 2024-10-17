@@ -3,19 +3,22 @@ package main
 import (
 	"context"
 	"cucumber/frontend"
+	"cucumber/report"
 	"github.com/cucumber/godog"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
+	const concurrency = 2
+
 	file, err := os.Create("report.html")
 	if err != nil {
 		log.Panicln("cannot create report file in this folder")
 	}
-
 	defer file.Close()
-	const concurrency = 2
+
 	var opts = godog.Options{
 		Output:              file,
 		Concurrency:         concurrency,
@@ -25,9 +28,20 @@ func main() {
 		Paths:               []string{"features"},
 	}
 
+	testReport := report.New()
+
 	testSuite := godog.TestSuite{
 		Name:    "App",
 		Options: &opts,
+		TestSuiteInitializer: func(suiteContext *godog.TestSuiteContext) {
+			suiteContext.BeforeSuite(func() {
+				testReport.SetStartDate(time.Now())
+			})
+
+			suiteContext.AfterSuite(func() {
+
+			})
+		},
 		ScenarioInitializer: func(sc *godog.ScenarioContext) {
 			frontend.InitializeScenario(sc)
 

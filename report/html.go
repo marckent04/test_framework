@@ -2,7 +2,7 @@ package report
 
 import "fmt"
 
-func (r *report) HTMLBuildContent() (content string) {
+func (r *Report) HTMLBuildContent() (content string) {
 	const stepTemplate = `<p style="color: %s;">%s</p>`
 	for _, scenario := range r.scenarios {
 		title := r.htmlWrapIn("h2", scenario.title)
@@ -23,6 +23,12 @@ func (r *report) HTMLBuildContent() (content string) {
 	return
 }
 
-func (r *report) htmlWrapIn(selector, content string) string {
+func (r *Report) htmlFormatStepReportLine(scenario scenario, stepText string) string {
+	if scenario.error == nil {
+
+	}
+}
+
+func (r *Report) htmlWrapIn(selector, content string) string {
 	return fmt.Sprintf("<%s>%s</%s>", selector, content, selector)
 }

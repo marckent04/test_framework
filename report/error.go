@@ -1,15 +1,15 @@
 package report
 
-type stepError struct {
+type StepError struct {
 	step, msg string
 }
 
-func (e stepError) Error() string {
+func (e StepError) Error() string {
 	return e.msg
 }
 
 func NewStepError(step, errorMsg string) error {
-	return stepError{
+	return StepError{
 		step: step,
 		msg:  errorMsg,
 	}

@@ -1,7 +1,15 @@
 package report
 
-type Scenario struct {
+type scenario struct {
 	title string
 	steps []string
-	error stepError
+	error error
+}
+
+func newScenario(title string, steps []string, err StepError) scenario {
+	return scenario{
+		title: title,
+		steps: steps,
+		error: err,
+	}
 }
