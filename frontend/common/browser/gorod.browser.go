@@ -1,10 +1,11 @@
 package browser
 
 import (
-	"github.com/go-rod/rod"
-	"github.com/go-rod/rod/lib/launcher"
 	"os"
 	"time"
+
+	"github.com/go-rod/rod"
+	"github.com/go-rod/rod/lib/launcher"
 )
 
 type rodBrowser struct {
@@ -34,5 +35,4 @@ func instantiateRodBrowser() *rod.Browser {
 
 	const seconds = 10
 	return rod.New().ControlURL(u).MustConnect().Timeout(seconds * time.Second)
-
 }
