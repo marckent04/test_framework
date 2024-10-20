@@ -10,22 +10,6 @@ import (
 	"github.com/tdewolff/minify/v2/minify"
 )
 
-func TestGetTemplateByDelimiters(t *testing.T) {
-	formatter := htmlReportFormatter{}
-
-	scenarioTpl := `
-          <!--STEP_TEMPLATE-->
-			<p>hello step template</p>
-          <!--STEP_TEMPLATE-->
-	`
-
-	expected := "<p>hello step template</p>"
-
-	if received := formatter.getTemplateByDelimiters(scenarioTpl, "<!--STEP_TEMPLATE-->"); received != expected {
-		t.Errorf("Step template getting error\nExpected:%s\nreceived:%s", expected, received)
-	}
-}
-
 func TestFormatSuccessCaseScenarioTemplate(t *testing.T) {
 	formatter := htmlReportFormatter{}
 
@@ -40,7 +24,7 @@ func TestFormatSuccessCaseScenarioTemplate(t *testing.T) {
 		},
 	}, 10*time.Second, nil)
 
-	firstTpl := formatter.fillScenarioTemplate(first, template)
+	firstTpl := formatter.fillScenarioTemplate(first, template, "")
 
 	if !strings.Contains(firstTpl, strings.TrimSpace(`
 		<details>
@@ -58,7 +42,7 @@ func TestFormatFailedCaseScenarioTemplate(t *testing.T) {
 	formatter := htmlReportFormatter{}
 	failed := newScenario("connect", make([]Step, 0), 3*time.Second, errors.New("error"))
 
-	firstTpl := formatter.fillScenarioTemplate(failed, template)
+	firstTpl := formatter.fillScenarioTemplate(failed, template, "")
 
 	if !strings.Contains(firstTpl, strings.TrimSpace(`
 		<details>
@@ -84,7 +68,6 @@ func TestFormatStepTemplate(t *testing.T) {
 }
 
 func TestFormatScenario(t *testing.T) {
-	t.Skipf("wizard error")
 	formatter := htmlReportFormatter{}
 
 	steps := []Step{
@@ -101,15 +84,13 @@ func TestFormatScenario(t *testing.T) {
 	sc := newScenario("TESTING", steps, 2*time.Second, errors.New("error"))
 
 	scenarioTpl := `
-    <!--SCENARIO_TEMPLATE-->
 			<h1>{{ SCENARIO_NAME }}</h1>
 			<div>
-          <!--STEP_TEMPLATE-->
-			<p>{{ STEP_TITLE }}</p>
-          <!--STEP_TEMPLATE-->
+				{{ STEPS }}
 			</div>
-    <!--SCENARIO_TEMPLATE-->
 `
+
+	stepTemplate := "<p>{{ STEP_TITLE }}</p>"
 
 	expected, _ := minify.HTML(`
 	<h1>TESTING</h1>
@@ -119,11 +100,22 @@ func TestFormatScenario(t *testing.T) {
 	</div>
 `)
 
-	result, _ := minify.HTML(formatter.fillScenarioTemplate(sc, scenarioTpl))
+	result, _ := minify.HTML(formatter.fillScenarioTemplate(sc, scenarioTpl, stepTemplate))
 
 	if strings.TrimSpace(html.EscapeString(result)) != strings.TrimSpace(html.EscapeString(expected)) {
 		t.Errorf("Expected: %s, Received: %s", strings.TrimSpace(expected), strings.TrimSpace(result))
 	}
+}
+
+func TestFormatReport(t *testing.T) {
+	formatter := htmlReportFormatter{}
+
+	startDate := time.Date(2024, 12, 10, 10, 00, 00, 00)
+
+	reportTemplate := ""
+	scenarioTpl := `<h1>{{ SCENARIO_NAME }}</h1><div>{{ STEPS }}</div>`
+	stepTemplate := "<p>{{ STEP_TITLE }}</p>"
+	formatter.fillReport(startDate)
 }
 
 const template = `

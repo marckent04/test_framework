@@ -5,6 +5,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -12,15 +13,18 @@ import (
 	"github.com/cucumber/godog"
 )
 
-const htmlScenarioTemplateDelimiter = "<!--SCENARIO_TEMPLATE-->"
-const htmlStepTemplateDelimiter = "<!--STEP_TEMPLATE-->"
+const reportTemplateKey, scenarioTemplateKey, stepTemplateKey = "report", "scenario", "step"
 
-var htmlTemplate string
+var htmlTemplates = map[string]string{
+	reportTemplateKey:   "",
+	scenarioTemplateKey: "",
+	stepTemplateKey:     "",
+}
 
 type htmlReportFormatter struct {
 }
 
-func (r htmlReportFormatter) fillReport(template string, startDate time.Time, scenarios []Scenario) string {
+func (r htmlReportFormatter) fillReport(startDate time.Time, scenarios []Scenario, reportTemplate, scenarioTemplate, stepTemplate string) string {
 	year, month, day := startDate.Date()
 	dateTime := fmt.Sprintf("%d-%d-%d at %d:%d", month, day, year, startDate.Hour(), startDate.Minute())
 
@@ -34,11 +38,10 @@ func (r htmlReportFormatter) fillReport(template string, startDate time.Time, sc
 			succeed++
 		}
 
-		content += fmt.Sprintln(r.fillScenarioTemplate(sc, template))
+		content += fmt.Sprintln(r.fillScenarioTemplate(sc, scenarioTemplate, stepTemplate))
 	}
 
-	scenarioTpl := r.getTemplateByDelimiters(template, htmlScenarioTemplateDelimiter)
-	testSuiteReport := strings.Replace(template, scenarioTpl, content, 1)
+	testSuiteReport := r.setTemplateVar(reportTemplate, "SCENARIOS", content)
 	testSuiteReport = r.setTemplateVar(testSuiteReport, "EXECUTION_DATE", dateTime)
 	testSuiteReport = r.setTemplateVar(testSuiteReport, "TOTAL_TESTS", strconv.Itoa(total))
 	testSuiteReport = r.setTemplateVar(testSuiteReport, "SUCCEEDED_TESTS", strconv.Itoa(succeed))
@@ -51,14 +54,8 @@ func (r htmlReportFormatter) fillReport(template string, startDate time.Time, sc
 	return testSuiteReport
 }
 
-func (r htmlReportFormatter) getTemplateByDelimiters(template, delimiter string) string {
-	_, stepTemplate, _ := strings.Cut(template, delimiter)
-	stepTemplate, _, _ = strings.Cut(stepTemplate, delimiter)
-	return strings.TrimSpace(stepTemplate)
-}
-
-func (r htmlReportFormatter) fillScenarioTemplate(sc Scenario, reportTemplate string) string {
-	formattedTemplate := r.getTemplateByDelimiters(reportTemplate, htmlScenarioTemplateDelimiter)
+func (r htmlReportFormatter) fillScenarioTemplate(sc Scenario, scenarioTemplate, stepTemplate string) string {
+	formattedTemplate := scenarioTemplate
 	formattedTemplate = r.setTemplateVar(formattedTemplate, "SCENARIO_NAME", sc.title)
 
 	duration := sc.duration.Seconds()
@@ -72,13 +69,12 @@ func (r htmlReportFormatter) fillScenarioTemplate(sc Scenario, reportTemplate st
 	formattedTemplate = r.setTemplateVar(formattedTemplate, "SCENARIO_STATUS_COLOR", color)
 	formattedTemplate = r.setTemplateVar(formattedTemplate, "SCENARIO_ERROR_MESSAGE", sc.err)
 
-	stepTemplate := r.getTemplateByDelimiters(reportTemplate, htmlStepTemplateDelimiter)
 	var filledSteps string
 	for _, step := range sc.steps {
 		filledSteps += fmt.Sprintln(r.fillStepTemplate(step, stepTemplate))
 	}
 
-	formattedTemplate = strings.Replace(formattedTemplate, stepTemplate, filledSteps, 1)
+	formattedTemplate = r.setTemplateVar(formattedTemplate, "STEPS", filledSteps)
 	return formattedTemplate
 }
 
@@ -107,8 +103,8 @@ func (r htmlReportFormatter) setTemplateVar(template, variableName, value string
 }
 
 func (r htmlReportFormatter) WriteReport(startDate time.Time, scenarios []Scenario) {
-	template := r.getTemplate()
-	content := r.fillReport(template, startDate, scenarios)
+	report, scenario, step := r.getTemplates()
+	content := r.fillReport(startDate, scenarios, report, scenario, step)
 	file, err := os.Create("report.html")
 	if err != nil {
 		log.Panicf("cannot create report file in this folder ( %s )\n", err)
@@ -121,17 +117,20 @@ func (r htmlReportFormatter) WriteReport(startDate time.Time, scenarios []Scenar
 	}
 }
 
-func (r htmlReportFormatter) getTemplate() string {
-	if len(htmlTemplate) > 0 {
-		return htmlTemplate
+func (r htmlReportFormatter) getTemplates() (report, scenario, step string) {
+	for name, content := range htmlTemplates {
+		if len(content) > 0 {
+			continue
+		}
+
+		templatePath := path.Join("report", "templates", fmt.Sprintf("%s.template.html", name))
+		file, err := os.ReadFile(templatePath)
+		if err != nil {
+			log.Printf("%s template not found\n", name)
+			panic(err)
+		}
+		htmlTemplates[name] = string(file)
 	}
 
-	file, err := os.ReadFile("report.template.html")
-	if err != nil {
-		panic(err)
-	}
-
-	htmlTemplate = string(file)
-
-	return htmlTemplate
+	return htmlTemplates[reportTemplateKey], htmlTemplates[scenarioTemplateKey], htmlTemplates[stepTemplateKey]
 }
