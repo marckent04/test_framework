@@ -47,7 +47,11 @@ func TestShouldInitializeAppConfig(t *testing.T) {
 func TestShouldDefineConcurrencyTo0BecauseHeadlessIsDisabled(t *testing.T) {
 	appArgs := appArgsConfig{
 		Parallel: 10,
+<<<<<<< HEAD
 		Headless: false,
+=======
+		Headless: true,
+>>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 	}
 
 	appConfigFile := appFileConfig{}
@@ -59,7 +63,11 @@ func TestShouldDefineConcurrencyTo0BecauseHeadlessIsDisabled(t *testing.T) {
 func TestShouldDefineConcurrencyTo10BecauseHeadlessIsEnabled(t *testing.T) {
 	appArgs := appArgsConfig{
 		Parallel: 10,
+<<<<<<< HEAD
 		Headless: true,
+=======
+		Headless: false,
+>>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 	}
 
 	appConfigFile := appFileConfig{}
@@ -70,7 +78,11 @@ func TestShouldDefineConcurrencyTo10BecauseHeadlessIsEnabled(t *testing.T) {
 
 func TestShouldDefineSlowMotionTo0BecauseHeadlessIsEnabled(t *testing.T) {
 	appArgs := appArgsConfig{
+<<<<<<< HEAD
 		Headless: true,
+=======
+		Headless: false,
+>>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 	}
 
 	appConfigFile := appFileConfig{
@@ -81,9 +93,15 @@ func TestShouldDefineSlowMotionTo0BecauseHeadlessIsEnabled(t *testing.T) {
 	assert.Equal(t, time.Duration(0), InitAppConfig(appArgs, appConfigFile).GetSlowMotion())
 }
 
+<<<<<<< HEAD
 func TestShouldDefineSlowMotionTo20sBecauseHeadlessIsDisabled(t *testing.T) {
 	appArgs := appArgsConfig{
 		Headless: false,
+=======
+func TestShouldDefineSlowMotionTo20sBecauseHeadlessIsEnabled(t *testing.T) {
+	appArgs := appArgsConfig{
+		Headless: true,
+>>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 	}
 
 	appConfigFile := appFileConfig{
@@ -101,7 +119,11 @@ func TestShouldHeadlessModeEnabled(t *testing.T) {
 
 	appConfigFile := appFileConfig{}
 
+<<<<<<< HEAD
 	assert.True(t, InitAppConfig(appArgs, appConfigFile).IsHeadlessModeEnabled())
+=======
+	assert.False(t, InitAppConfig(appArgs, appConfigFile).IsHeadlessModeEnabled())
+>>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 }
 
 func TestShouldHeadlessModeDisabled(t *testing.T) {
@@ -111,5 +133,9 @@ func TestShouldHeadlessModeDisabled(t *testing.T) {
 
 	appConfigFile := appFileConfig{}
 
+<<<<<<< HEAD
 	assert.False(t, InitAppConfig(appArgs, appConfigFile).IsHeadlessModeEnabled())
+=======
+	assert.True(t, InitAppConfig(appArgs, appConfigFile).IsHeadlessModeEnabled())
+>>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 }

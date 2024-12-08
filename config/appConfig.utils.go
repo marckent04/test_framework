@@ -32,7 +32,13 @@ func (c *testingConfig) IsHeadlessModeEnabled() bool {
 }
 
 func (c *testingConfig) GetSlowMotion() time.Duration {
+<<<<<<< HEAD
 	if c.Headless {
+=======
+	hasSlowMotion := c.Headless && len(c.SlowMotion) > 0
+
+	if !hasSlowMotion {
+>>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 		return 0
 	}
 
