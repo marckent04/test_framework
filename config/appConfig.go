@@ -7,11 +7,7 @@ type AppConfig struct {
 }
 
 func (c *AppConfig) GetConcurrency() int {
-<<<<<<< HEAD
 	if !c.Headless {
-=======
-	if c.Headless {
->>>>>>> 513fbc0 (refactor(config): reduce config file variables)
 		return 0
 	}
 	return c.Parallel
