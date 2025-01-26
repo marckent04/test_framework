@@ -42,5 +42,13 @@ func (s steps) dropdownHaveValuesSelected() core.TestStep {
 
 			return vErr
 		},
+		core.StepDocumenation{
+			Description: "Check if the dropdown has the specified values selected",
+			Variables: []core.StepVariable{
+				{Name: "dropdown", Type: "string"},
+				{Name: "values", Type: "string"},
+			},
+			Example: `the "country" dropdown should have "USA,Canada" selected`,
+		},
 	)
 }

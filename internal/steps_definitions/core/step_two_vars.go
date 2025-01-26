@@ -29,10 +29,22 @@ func (s stepTwoVars[T, U]) Validate(vc *ValidatorContext) any {
 
 func NewStepWithTwoVariables[T stepSupportedTypes, U stepSupportedTypes](sentences []string,
 	definition func(*TestSuiteContext) func(T, U) error,
-	validator func(T, U) ValidationErrors) TestStep {
+	validator func(T, U) ValidationErrors,
+	doc StepDocumenation,
+) TestStep {
 	return stepTwoVars[T, U]{
 		sentences,
 		definition,
 		validator,
 	}
+}
+
+type StepDocumenation struct {
+	Description string
+	Variables   []StepVariable
+	Example     string
+}
+
+type StepVariable struct {
+	Name, Type string
 }

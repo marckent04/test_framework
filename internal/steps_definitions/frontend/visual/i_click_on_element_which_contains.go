@@ -19,5 +19,13 @@ func (s steps) iClickOnElementWhichContains() core.TestStep {
 			}
 		},
 		nil,
+		core.StepDocumenation{
+			Description: "Click on an element which contains the specified text",
+			Variables: []core.StepVariable{
+				{Name: "element", Type: "string"},
+				{Name: "text", Type: "string"},
+			},
+			Example: `I click on "button" which contains "Submit"`,
+		},
 	)
 }
