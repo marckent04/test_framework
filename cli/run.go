@@ -34,7 +34,6 @@ func Run(appConfig *config.AppConfig) {
 
 	log.Println("Running tests ...")
 	status := testSuite.Run()
-	log.Println("Tests execution finished")
 	if status != 0 {
 		log.Fatalf("zero status code expected, %d received", status)
 	}
@@ -47,7 +46,12 @@ func testSuiteInitializer(testReport *report.Report) func(*godog.TestSuiteContex
 		})
 
 		suiteContext.AfterSuite(func() {
-			testReport.Write()
+			if testReport.HasScenarios() {
+				testReport.Write()
+				log.Println("Tests execution finished")
+			} else {
+				log.Println("No scenarios executed")
+			}
 		})
 	}
 }

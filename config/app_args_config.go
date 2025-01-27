@@ -2,8 +2,6 @@ package config
 
 import (
 	"time"
-
-	"github.com/alexflint/go-arg"
 )
 
 type RunCmd struct {
@@ -26,19 +24,4 @@ type InitCmd struct {
 type appArgsConfig struct {
 	Run  *RunCmd  `arg:"subcommand:run" help:"run tests"`
 	Init *InitCmd `arg:"subcommand:init" help:"init cli config"`
-}
-
-func getAppArgs() appArgsConfig {
-	args := appArgsConfig{}
-	arg.MustParse(&args)
-
-	validateSubcommand(args)
-
-	return args
-}
-
-func validateSubcommand(args appArgsConfig) {
-	if args.Run == nil && args.Init == nil {
-		panic("subcommand is required")
-	}
 }
