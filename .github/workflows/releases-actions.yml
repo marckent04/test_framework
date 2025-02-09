@@ -4,15 +4,12 @@ on:
   push:
     branches:
       - "releases/*"
-  pull_request:
-    branches:
-      - poc
+      - feat/ci-releases
   workflow_dispatch:
 
 env:
   BRANCH_NAME_REGEX: "^(releases|feat)/"
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  GO_VERSION: "1.23"
 
 
 permissions:
@@ -36,15 +33,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Install Commitlint
         run: |
-          yarn init --yes
-          yarn add @commitlint/config-conventional commitlint@latest validate-branch-name
-      #
-      #      - name: Validate PR Commits with Commitlint
-      #        run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
+            yarn init --yes
+            yarn add @commitlint/config-conventional commitlint@latest
+      - name: Validate Commits with Commitlint
+        run: |
+          npx commitlint --from ${{ github.base_ref }} --to ${{ github.sha }} --verbose
 
       - name: Validate Branch Name
         run: npx validate-branch-name -r "${{ env.BRANCH_NAME_REGEX }}" -t "${{ env.BRANCH_NAME }}"
@@ -52,7 +49,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version: ${{ vars.GO_VERSION }}
 
       - name: Install golangci-lint
         run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
@@ -90,18 +87,17 @@ jobs:
   release:
     name: Semantic Release
     runs-on: ubuntu-latest
-    #    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Ensure full history for semantic-release
+          fetch-depth: 0
 
       - name: Set Up Go Environment
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version: ${{ vars.GO_VERSION }}
 
       - name: Install Dependencies (Optional)
         run: |
@@ -115,7 +111,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: ${{ vars.NODE_VERSION }}
 
       - name: Run Semantic Release
         id: semantic_release
@@ -147,10 +143,3 @@ jobs:
             build/etoolse-windows-arm64
           allow_override: true
           gzip: false
-#        uses: ncipollo/release-action@v1
-#        with:
-#          artifacts: "dist/*"
-#          token: ${{ secrets.GITHUB_TOKEN }}
-#          tag: v${{ steps.semantic_release.outputs.new_release_version }}
-##          name: Release ${{ steps.semantic_release.outputs.new_release_version }}
-#          allowUpdates: true
