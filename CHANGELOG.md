@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/marckent04/test_framework/compare/v1.0.0...v1.0.1) (2025-02-09)
+
+
+### Bug Fixes
+
+* try to get all the files at once ([92fa8df](https://github.com/marckent04/test_framework/commit/92fa8dfad5dbb784a3b8cfbdc2e62a67ee75c331))
+
 # 1.0.0 (2025-02-09)
 
 
