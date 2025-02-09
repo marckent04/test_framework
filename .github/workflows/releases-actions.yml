@@ -130,16 +130,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: v${{ steps.semantic_release.outputs.new_release_version }}
           files: >
-            build/etoolse-darwin-amd64        
-            build/etoolse-linux-386
-            build/etoolse-linux-arm
-            build/etoolse-windows-386
-            build/etoolse-windows-amd64.exe
-            build/etoolse-windows-arm
-            build/etoolse-darwin-arm64
-            build/etoolse-linux-amd64
-            build/etoolse-linux-arm64
-            build/etoolse-windows-amd64
-            build/etoolse-windows-arm64
+            build/*
           allow_override: true
           gzip: false
