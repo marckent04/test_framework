@@ -24,3 +24,4 @@ cover
 **/.DS_Store
 frontend.yml
 cli.yml
+build/
