@@ -2,7 +2,7 @@
   "branches": [
     "master",
     "dev",
-    "feat/ci-releases"
+    "releases/*"
   ],
   "plugins": [
     "@semantic-release/commit-analyzer",
