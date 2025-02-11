@@ -1,0 +1,48 @@
+# 1.0.0 (2025-02-11)
+
+
+### Bug Fixes
+
+* **browser:** get by xpath ([d907a60](https://github.com/marckent04/test_framework/commit/d907a60775af488f2281cd0d9d4a85d141f3e2c5))
+* **browser:** get element by many selectors ([9cb04e8](https://github.com/marckent04/test_framework/commit/9cb04e84ad5635eeaf5cc45457e4be271ea59fa4))
+* **config:** default values ([dec0a85](https://github.com/marckent04/test_framework/commit/dec0a85fedc16dffa55d5b273b5df18c3b4a2535))
+* **config:** set timeout ([7d5962a](https://github.com/marckent04/test_framework/commit/7d5962aeeee905474a8b24534e85dfd46591431a))
+* **config:** timeout config arg typo ([ce33707](https://github.com/marckent04/test_framework/commit/ce33707d25b4805239e8ee3c80728ed915e1c45c))
+* **config:** use file gherkin location by default ([0a4e6b3](https://github.com/marckent04/test_framework/commit/0a4e6b35f6e9048ded8c8b9ac922544cb840c1de))
+* **e2e:** server ([cc6cf1e](https://github.com/marckent04/test_framework/commit/cc6cf1eb91d6bb6a58fe28786d53a94ebd024d12))
+* run app without tests ([93ea714](https://github.com/marckent04/test_framework/commit/93ea7140315932b84851de922102714e64bb20c4))
+
+
+### Features
+
+* add init cli mode ([f85d016](https://github.com/marckent04/test_framework/commit/f85d0166a7f5210da9976ca99cee643b66f423fb))
+* add more logs ([109171d](https://github.com/marckent04/test_framework/commit/109171d0fe08a3cb8c53a1ddcad76aacaecdb415))
+* add run command to cli ([ffd610a](https://github.com/marckent04/test_framework/commit/ffd610a5254df3b58fe52081fe8c94c83749cbc0))
+* **browser:** add actions timeout ([ea7748c](https://github.com/marckent04/test_framework/commit/ea7748ccd9de72bfe6624f3a8265fdde82e9ead0))
+* **browser:** delay between test suite steps ( slowMotion ) ([ec27bb8](https://github.com/marckent04/test_framework/commit/ec27bb809eac980ef4d9a2e6672a7c6aa04b6e6a))
+* **browser:** heeadless configuration ([3e29fa1](https://github.com/marckent04/test_framework/commit/3e29fa1ff8f08a22ce43cb3dcd74de3deb8840f7))
+* **cmd:** validate variables ([b819639](https://github.com/marckent04/test_framework/commit/b819639d939035bfcbd9e047e17e46034a459981))
+* **config:** add base url support ([47b4be4](https://github.com/marckent04/test_framework/commit/47b4be4b798e1182b0c6a91df4597facaf2d50f2))
+* **config:** config all html elements in config elements keys ([61c149f](https://github.com/marckent04/test_framework/commit/61c149ff384450449e88ad06d20800f74339de78))
+* **config:** get all variables from config file ([6c8e2e9](https://github.com/marckent04/test_framework/commit/6c8e2e999891b90b506efd61ba57f1a9c91dd183))
+* **config:** pass config by args ([8139460](https://github.com/marckent04/test_framework/commit/8139460a0897ea542525d9366f65a47ed7b0f71e))
+* create releases packing ([0d39177](https://github.com/marckent04/test_framework/commit/0d391779bd0004fb348b25a382ac5042ea03d0d9))
+* first table sentences ([172b181](https://github.com/marckent04/test_framework/commit/172b1812ef2c70e16f188206ca06435252ff858e))
+* **form:** first sentences implementation ([c7eca18](https://github.com/marckent04/test_framework/commit/c7eca183331b066912e741cdc656f16f78e41922))
+* **frontend:** simplify sentences wildcard writing ([79bd31f](https://github.com/marckent04/test_framework/commit/79bd31f3f132b3a16787ce4e1d28fe781db9378d))
+* **keyboard:** press special keys ([c051f15](https://github.com/marckent04/test_framework/commit/c051f150f5d707364834f8ece0f25fea8aa0def5))
+* **navigation:** first sentences ([70f721a](https://github.com/marckent04/test_framework/commit/70f721a660ed763ffa18d03c3a63460e26454f2d))
+* poc v1 ([0645dc4](https://github.com/marckent04/test_framework/commit/0645dc453a3c5dcba921b2288bb638890aa4bd4f))
+* poc v1.1 ([182f99b](https://github.com/marckent04/test_framework/commit/182f99b6c9f6f0f06ff85bc3b1998bb813547b8c))
+* **report:**  format and activation configuration ([02cd6c1](https://github.com/marckent04/test_framework/commit/02cd6c1184acfc9e36729b15470463f53556d5bd))
+* **report:** add app name and app version to test suite report ([0d14820](https://github.com/marckent04/test_framework/commit/0d1482011227162381cde01424bda276fdf07e28))
+* **report:** add step duration to test suite report ([b63de40](https://github.com/marckent04/test_framework/commit/b63de403289a8756dea73c1b240d2dd7e43201e0))
+* **report:** add total execution time to test suite report ([d39c712](https://github.com/marckent04/test_framework/commit/d39c712215aa6a54a93158a9e2cf6602d48e0263))
+* **report:** embed html templates in binary ([5d69482](https://github.com/marckent04/test_framework/commit/5d694821d3e17a721910c11e8d45aa7830426ad1))
+* **report:** generate tests suite report ([047e6d4](https://github.com/marckent04/test_framework/commit/047e6d490f0256232b79b236c0c85c4f33d947a8))
+* run cucumber tests by main.go ([f5664af](https://github.com/marckent04/test_framework/commit/f5664afcd4770b1d890720052baeadb028065c9e))
+* string var can be put between quotes or not ([74de115](https://github.com/marckent04/test_framework/commit/74de115b3dfb5b0e7a986e16b0de8205461166d3))
+* technical base architecture ([bf9e910](https://github.com/marckent04/test_framework/commit/bf9e9100fd4e852a9ecb10e8a6b3bb3d92fe0c0d))
+* user can see element details ([de85902](https://github.com/marckent04/test_framework/commit/de85902fb0809fb9f2fc9138b85300ba6910f74f))
+* **visual:** first visual sentences ([2d22d26](https://github.com/marckent04/test_framework/commit/2d22d26dd03305f807d8be2b4e371be6096e54ab))
+* wip ([c0052e2](https://github.com/marckent04/test_framework/commit/c0052e271ccdbe15478b99b9e87346530666f2b5))
