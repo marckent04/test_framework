@@ -2,7 +2,9 @@ package core
 
 import (
 	"etoolse/internal/config/testsconfig"
+	"fmt"
 	"slices"
+	"strings"
 	"sync"
 )
 
@@ -55,9 +57,9 @@ func (vc *ValidatorContext) GetElementsErrorsFormatted() string {
 	const elementFormat = "\t\t%s:\n-<missing-selector>"
 	
 	for _, element := range vc.missingElementErrors {
-		lines = append(lines, "\t\t- " fmt.Sprintf(elementFormat, element, ))
+		lines = append(lines, fmt.Sprintf(elementFormat, element))
 	}
-	return format
+	return strings.Join(lines, "\n")
 }
 
 func (vc *ValidatorContext) AddValidationErrors(errors ValidationErrors) {

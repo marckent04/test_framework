@@ -49,10 +49,16 @@ func validateScenarioInitializer(ctx *core.ValidatorContext) func(*godog.Scenari
 func validateTestSuiteInitializer(validatorCtx *core.ValidatorContext) func(*godog.TestSuiteContext) {
 	return func(suiteContext *godog.TestSuiteContext) {
 		suiteContext.AfterSuite(func() {
-			logger.Info("Errors:")
+			if validatorCtx.HasErrors() {
+				logger.Error("Elements validation failed", []string{
+					"Elements variables malformed in gherkin files",
+					"Elements variables must be defined in the config file",
+				}, []string{
+					"Verify the elements variables in the gherkin files",
+				})
+				logger.Info(validatorCtx.GetElementsErrorsFormatted())
+			}
 		})
 	}
 }
 
-func formatMissingElementsMsg() string {
-}
