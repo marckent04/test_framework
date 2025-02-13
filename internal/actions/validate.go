@@ -4,14 +4,15 @@ import (
 	"etoolse/internal/config"
 	"etoolse/internal/steps_definitions/core"
 	"etoolse/internal/steps_definitions/frontend"
-	"log"
+	"etoolse/pkg/logger"
+	"fmt"
 
 	"github.com/cucumber/godog"
 	"github.com/tdewolff/parse/buffer"
 )
 
 func Validate(appConfig *config.App) {
-	log.Println("Validate gherkin files ...")
+	logger.Info("Validate gherkin files ...")
 
 	const concurrency = 5
 	var opts = godog.Options{
@@ -33,12 +34,12 @@ func Validate(appConfig *config.App) {
 
 	status := testSuite.Run()
 	if status != 0 {
-		log.Fatalf("zero status code expected, %d received", status)
+		logger.Fatal(fmt.Sprintf("zero status code expected, %d received", status), nil)
 	}
 }
 
 func validateScenarioInitializer(ctx *core.ValidatorContext) func(*godog.ScenarioContext) {
-	log.Println("Initializing scenarios for validation ...")
+	logger.Info("Initializing scenarios for validation ...")
 
 	return func(sc *godog.ScenarioContext) {
 		frontend.InitValidationScenarios(sc, ctx)
@@ -48,8 +49,10 @@ func validateScenarioInitializer(ctx *core.ValidatorContext) func(*godog.Scenari
 func validateTestSuiteInitializer(validatorCtx *core.ValidatorContext) func(*godog.TestSuiteContext) {
 	return func(suiteContext *godog.TestSuiteContext) {
 		suiteContext.AfterSuite(func() {
-			log.Println("Errors:")
-			log.Println(validatorCtx.GetErrors())
+			logger.Info("Errors:")
 		})
 	}
+}
+
+func formatMissingElementsMsg() string {
 }

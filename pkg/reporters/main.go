@@ -1,6 +1,7 @@
 package reporters
 
 import (
+	"etoolse/pkg/logger"
 	"fmt"
 	"log"
 	"time"
@@ -21,7 +22,7 @@ func (r *Report) AddScenario(sc Scenario) {
 	}
 
 	addedScenarioLoggedMessage := fmt.Sprintf("'%s' %s in %fs", sc.title, result, sc.duration.Seconds())
-	log.Println(addedScenarioLoggedMessage)
+	logger.Info(addedScenarioLoggedMessage)
 	r.scenarios = append(r.scenarios, sc)
 }
 

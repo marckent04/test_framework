@@ -9,7 +9,7 @@ import (
 func main() {
 	cliConfig := config.Init()
 	if cliConfig == nil {
-		log.Fatal("no mode specified")
+		logger.Fatal("no mode specified")
 	}
 
 	modes := map[config.Mode]actions.Type{
@@ -21,23 +21,23 @@ func main() {
 	if mode, ok := modes[cliConfig.Mode]; ok {
 		mode(cliConfig)
 	} else {
-		log.Fatalf("unknown mode: %s", cliConfig.Mode)
+		logger.Fatalf("unknown mode: %s", cliConfig.Mode)
 	}
 }
 
 func runMode(appConfig *config.App) {
-	log.Println("--- configuration resume ---")
+	logger.Info("--- configuration resume ---")
 
-	log.Println("app name: ", appConfig.AppName)
-	log.Println("app description: ", appConfig.AppDescription)
-	log.Println("app version: ", appConfig.AppVersion)
-	log.Println("app tags: ", appConfig.Tags)
-	log.Println("app gherkin location: ", appConfig.GherkinLocation)
-	log.Println("app reporters format: ", appConfig.ReportFormat)
-	log.Println("app concurrency: ", appConfig.GetConcurrency())
-	log.Println("app slow motion: ", appConfig.GetSlowMotion())
-	log.Println("app test suite timeout: ", appConfig.Timeout)
-	log.Println("app headless mode: ", appConfig.IsHeadlessModeEnabled())
+	logger.Info("app name: ", appConfig.AppName)
+	logger.Info("app description: ", appConfig.AppDescription)
+	logger.Info("app version: ", appConfig.AppVersion)
+	logger.Info("app tags: ", appConfig.Tags)
+	logger.Info("app gherkin location: ", appConfig.GherkinLocation)
+	logger.Info("app reporters format: ", appConfig.ReportFormat)
+	logger.Info("app concurrency: ", appConfig.GetConcurrency())
+	logger.Info("app slow motion: ", appConfig.GetSlowMotion())
+	logger.Info("app test suite timeout: ", appConfig.Timeout)
+	logger.Info("app headless mode: ", appConfig.IsHeadlessModeEnabled())
 
 	log.Print("--- configuration resume end ---\n\n")
 

@@ -5,8 +5,9 @@ import (
 	"etoolse/internal/config"
 	"etoolse/internal/steps_definitions/frontend"
 	"etoolse/pkg/gherkinparser"
+	"etoolse/pkg/logger"
 	"etoolse/pkg/reporters"
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/cucumber/godog"
@@ -14,7 +15,7 @@ import (
 )
 
 func Run(appConfig *config.App) {
-	log.Println("Starting tests execution ...")
+	logger.Info("Starting tests execution ...")
 
 	parsedFeatures := gherkinparser.Parse(appConfig.GherkinLocation)
 	features := make([]godog.Feature, len(parsedFeatures))
@@ -42,10 +43,10 @@ func Run(appConfig *config.App) {
 		ScenarioInitializer:  scenarioInitializer(appConfig, &testReport),
 	}
 
-	log.Println("Running tests ...")
+	logger.Info("Running tests ...")
 	status := testSuite.Run()
 	if status != 0 {
-		log.Fatalf("zero status code expected, %d received", status)
+		logger.Fatal(fmt.Sprintf("zero status code expected, %d received", status), nil)
 	}
 }
 
@@ -58,15 +59,15 @@ func testSuiteInitializer(testReport *reporters.Report) func(*godog.TestSuiteCon
 		suiteContext.AfterSuite(func() {
 			if testReport.HasScenarios() {
 				testReport.Write()
-				log.Println("Tests execution finished")
+				logger.Info("Tests execution finished")
 			} else {
-				log.Println("No scenarios executed")
+				logger.Info("No scenarios executed")
 			}
 		})
 	}
 }
 func scenarioInitializer(config *config.App, testReport *reporters.Report) func(*godog.ScenarioContext) {
-	log.Println("Initializing scenario for test running ...")
+	logger.Info("Initializing scenario for test running ...")
 	return func(sc *godog.ScenarioContext) {
 		frontend.InitTestRunnerScenarios(sc, config)
 		myCtx := newScenarioCtx()

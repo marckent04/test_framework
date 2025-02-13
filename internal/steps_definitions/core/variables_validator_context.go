@@ -1,6 +1,7 @@
 package core
 
 import (
+	"etoolse/internal/config/testsconfig"
 	"slices"
 	"sync"
 )
@@ -12,18 +13,21 @@ type ValidatorContext struct {
 	missingElementErrors []string
 }
 
-func (vc *ValidatorContext) AddMissingPage(name string) {
-	if slices.Contains(vc.missingPageErrors, name) {
+func (vc *ValidatorContext) AddMissingPage(label string) {
+	key := testsconfig.GetLabelKey(label)
+
+	if slices.Contains(vc.missingPageErrors, key) {
 		return
 	}
-	vc.missingPageErrors = append(vc.missingPageErrors, name)
+	vc.missingPageErrors = append(vc.missingPageErrors, key)
 }
 
-func (vc *ValidatorContext) AddMissingElement(name string) {
-	if slices.Contains(vc.missingElementErrors, name) {
+func (vc *ValidatorContext) AddMissingElement(label string) {
+	key := testsconfig.GetLabelKey(label)
+	if slices.Contains(vc.missingElementErrors, key) {
 		return
 	}
-	vc.missingElementErrors = append(vc.missingElementErrors, name)
+	vc.missingElementErrors = append(vc.missingElementErrors, key)
 }
 
 func (vc *ValidatorContext) HasErrors() bool {
@@ -32,6 +36,28 @@ func (vc *ValidatorContext) HasErrors() bool {
 
 func (vc *ValidatorContext) GetErrors() []string {
 	return append(vc.missingPageErrors, vc.missingElementErrors...)
+}
+
+func (vc *ValidatorContext) GetMissingPages() []string {
+	return vc.missingPageErrors
+}
+
+func (vc *ValidatorContext) GetMissingElements() []string {
+	return vc.missingElementErrors
+}
+
+func (vc *ValidatorContext) GetElementsErrorsFormatted() string {
+	lines := []string{
+		"global:",
+		"\telements:",
+	}
+
+	const elementFormat = "\t\t%s:\n-<missing-selector>"
+	
+	for _, element := range vc.missingElementErrors {
+		lines = append(lines, "\t\t- " fmt.Sprintf(elementFormat, element, ))
+	}
+	return format
 }
 
 func (vc *ValidatorContext) AddValidationErrors(errors ValidationErrors) {

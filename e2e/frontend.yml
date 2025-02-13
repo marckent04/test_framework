@@ -20,4 +20,4 @@ global:
     table_e2e: "/table"
     details_e2e: "/details"
 
-  base_url: "http://server:3000"
+  base_url: "http://0.0.0.0:3000"

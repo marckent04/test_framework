@@ -4,7 +4,8 @@ import (
 	"etoolse/internal/browser/common"
 	"etoolse/internal/browser/rod"
 	"etoolse/internal/config/testsconfig"
-	"log"
+	"etoolse/pkg/logger"
+	"fmt"
 	"sync"
 	"time"
 )
@@ -37,7 +38,7 @@ func GetElementBySelectors(page common.Page, potentialSelectors []string) common
 
 			element, err := page.GetOneBySelector(selector)
 			if err != nil {
-				log.Println("no element found with selector ", selector)
+				logger.Info(fmt.Sprintf("element not found with selector %s", selector))
 				return
 			}
 			mu.Lock()
@@ -74,7 +75,10 @@ func GetElementCount(page common.Page, label string) int {
 	selector := GetActiveSelector(page, potentialSelectors)
 	elements, err := page.GetAllBySelector(selector)
 	if err != nil {
-		log.Fatal("no elements found with selector ", selector)
+		msg := fmt.Sprintf("Error getting elements with selector %s", selector)
+		logger.Error(msg, []string{
+			"Incorrect selector defined in the configuration file",
+		}, []string{"Check the selector in the configuration file"})
 	}
 
 	return len(elements)
